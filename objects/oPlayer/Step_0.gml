@@ -52,40 +52,43 @@ if(!global.gamePaused)
 		}break
 		case pState.swing:
 		{
-			if(instance_exists(oHook))
+			if(!grounded)
 			{
-				grapplex = oHook.x;
-				grappley = oHook.y;
-			}
-			else
-			{
-				grapplex = 0;
-				grappley = 0;
-			}
-				ropeAngle = point_direction(grapplex,grappley,x,y);
-				ropeLength = point_distance(grapplex,grappley,x,y);
+				if(instance_exists(oHook))
+				{
+					grapplex = oHook.x;
+					grappley = oHook.y;
+				}
+				else
+				{
+					grapplex = 0;
+					grappley = 0;
+				}
+					ropeAngle = point_direction(grapplex,grappley,x,y);
+					ropeLength = point_distance(grapplex,grappley,x,y);
 			
-			var ropeAngleAcceleration = -0.2 * dcos(ropeAngle);
-			ropeAngleAcceleration += (key_right - key_left) * 0.03;
-			//ropeLength += (key_down - key_up) * 2;
-			ropeLength = max(ropeLength,5);
+				var ropeAngleAcceleration = -0.2 * dcos(ropeAngle);
+				ropeAngleAcceleration += (key_right - key_left) * 0.03;
+				//ropeLength += (key_down - key_up) * 2;
+				ropeLength = max(ropeLength,5);
 		
-			ropeAngleVelocity += ropeAngleAcceleration;
-			ropeAngle += ropeAngleVelocity;
-			ropeAngleVelocity *= 0.99;
+				ropeAngleVelocity += ropeAngleAcceleration;
+				ropeAngle += ropeAngleVelocity;
+				ropeAngleVelocity *= 0.99;
 		
-			ropex = grapplex + lengthdir_x(ropeLength, ropeAngle);
-			ropey = grappley + lengthdir_y(ropeLength, ropeAngle);
+				ropex = grapplex + lengthdir_x(ropeLength, ropeAngle);
+				ropey = grappley + lengthdir_y(ropeLength, ropeAngle);
 		
-			hsp = ropex - x;
-			vsp = ropey - y;
+				hsp = ropex - x;
+				vsp = ropey - y;
 		
-			//if(key_jump) vsp = - jumpsp;
+				//if(key_jump) vsp = - jumpsp;
 		
-			if (right_click)
-			{
-				vspfrc = 0;
-				//vsp += -jumpsp;
+				if (right_click)
+				{
+					vspfrc = 0;
+					//vsp += -jumpsp;
+				}
 			}
 		}
 	
@@ -106,13 +109,13 @@ if(!global.gamePaused)
 		vsp = 0;
 	}
 	
-	if (hsp > 0) bbox_side = bbox_right; else bbox_side = bbox_left;
-	if (tilemap_get_at_pixel(tilemap,bbox_side + hsp,bbox_top) !=0) or (tilemap_get_at_pixel(tilemap,bbox_side + hsp,bbox_bottom) !=0)
-	{
-		if (hsp > 0) x = x - (x mod 32) + 31 - (bbox_right - x);
-		else x = x - (x mod 32) - (bbox_left - x);
-		hsp = 0;
-	}
+	//if (hsp > 0) bbox_side = bbox_right; else bbox_side = bbox_left;
+	//if (tilemap_get_at_pixel(tilemap,bbox_side + hsp,bbox_top) !=0) or (tilemap_get_at_pixel(tilemap,bbox_side + hsp,bbox_bottom) !=0)
+	//{
+	//	if (hsp > 0) x = x - (x mod 32) + 31 - (bbox_right - x);
+	//	else x = x - (x mod 32) - (bbox_left - x);
+	//	hsp = 0;
+	//}
  
 	if (place_meeting(x+hsp,y,oWall))
 	{
@@ -124,12 +127,15 @@ if(!global.gamePaused)
 		}
 		hsp = 0;
 		hspfrc = 0;
-		//while(!place_meeting(x+hStep,y,oWall)) x += hStep;
+		if(!pState.swing)
+		{
+			while(!place_meeting(x+hStep,y,oWall)) x += hStep;
+		}
 		if (state == pState.swing)
 		{
 			if (hsp > 0) x = x - (x mod 16) + 31 - (bbox_right - x);
 			else x = x - (x mod 16) - (bbox_left - x);
-			ropeAngle = point_direction(grapplex,grappley,x,y);
+			//ropeAngle = point_direction(grapplex,grappley,x,y);
 			ropeAngleVelocity = 0;
 		}
 	}
@@ -144,12 +150,38 @@ if(!global.gamePaused)
 		}
 		hsp = 0;
 		hspfrc = 0;
-		//while(!place_meeting(x+hStep,y,oTile)) x += hStep;
+		if(!pState.swing)
+		{
+			while(!place_meeting(x+hStep,y,oTile)) x += hStep;
+		}
 		if (state == pState.swing)
 		{
 			if (hsp > 0) x = x - (x mod 16) + 31 - (bbox_right - x);
 			else x = x - (x mod 16) - (bbox_left - x);
-			ropeAngle = point_direction(grapplex,grappley,x,y);
+			//ropeAngle = point_direction(grapplex,grappley,x,y);
+			ropeAngleVelocity = 0;
+		}
+	}
+	
+	if (place_meeting(x+hsp,y,oTWall))
+	{
+		var hStep = sign(hsp);
+		if ((state == pState.normal))
+		{
+			if (hsp > 0) x = x - (x mod 32) + 31 - (bbox_right - x);
+			else x = x - (x mod 32) - (bbox_left - x);
+		}
+		hsp = 0;
+		hspfrc = 0;
+		if(!pState.swing)
+		{
+			while(!place_meeting(x+hStep,y,oTWall)) x += hStep;
+		}
+		if (state == pState.swing)
+		{
+			if (hsp > 0) x = x - (x mod 16) + 31 - (bbox_right - x);
+			else x = x - (x mod 16) - (bbox_left - x);
+			//ropeAngle = point_direction(grapplex,grappley,x,y);
 			ropeAngleVelocity = 0;
 		}
 	}
@@ -174,7 +206,7 @@ if (tilemap_get_at_pixel(tilemap,bbox_left,bbox_side + vsp) !=0) or (tilemap_get
 		while(!place_meeting(x,y+vStep,oWall)) y += vStep;
 		if (state == pState.swing)
 		{
-			ropeAngle = point_direction(grapplex,grappley,x,y);
+			//ropeAngle = point_direction(grapplex,grappley,x,y);
 			ropeAngleVelocity = 0;
 		}
 	}
@@ -189,7 +221,7 @@ if (tilemap_get_at_pixel(tilemap,bbox_left,bbox_side + vsp) !=0) or (tilemap_get
 		while(!place_meeting(x,y+vStep,oTile)) y += vStep;
 		if (state == pState.swing)
 		{
-			ropeAngle = point_direction(grapplex,grappley,x,y);
+			//ropeAngle = point_direction(grapplex,grappley,x,y);
 			ropeAngleVelocity = 0;
 		}
 	}
@@ -238,4 +270,8 @@ if (tilemap_get_at_pixel(tilemap,bbox_left,bbox_side + vsp) !=0) or (tilemap_get
 	{
 		oTitle.Gamestart = true;
 		state = pState.normal;
+	}
+	if(Start == true) && ( GetUpSound == false)
+	{
+	wait++;
 	}

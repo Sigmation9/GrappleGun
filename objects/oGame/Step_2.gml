@@ -31,6 +31,10 @@ if(oTitle.Gamestart == true)
 {
 	audio_sound_gain(sndTitleScreen,-0.1,50);
 }
+if (audio_sound_get_gain(sndTitleScreen) == 0)
+{
+	audio_stop_sound(sndTitleScreen);
+}
 
 if (oGui.settings)
 {

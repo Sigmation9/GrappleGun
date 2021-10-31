@@ -28,7 +28,16 @@ if(!global.gamePaused)
 	{
 		if (hookL == false) audio_play_sound(sndGHit,8,false);
 		spd = 0 
+		if (!oPlayer.grounded) && (oPlayer.vsp >= 0 || isSwinging)
+		{
 		oPlayer.state = pState.swing;
-		 hookL = true;
+		isSwinging = true;
+		}
+		else
+		{
+		oPlayer.state = pState.normal;
+		isSwinging = false;
+		}
+		hookL = true;
 	}
 }

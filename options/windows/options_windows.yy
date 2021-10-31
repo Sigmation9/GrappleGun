@@ -1,7 +1,7 @@
 {
   "option_windows_display_name": "GrappleGun",
   "option_windows_executable_name": "GrappleGun.exe",
-  "option_windows_version": "1.0.0.0",
+  "option_windows_version": "2.0.0.0",
   "option_windows_company_info": "By Sigmation",
   "option_windows_product_info": "GrappleGun",
   "option_windows_copyright_info": "",

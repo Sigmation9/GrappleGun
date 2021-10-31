@@ -23,16 +23,17 @@ if(!global.gamePaused) && (oPlayer.state != pState.win)
 		with (instance_create_layer(x,y,"Hook",oHook))
 		{
 			spd = 25;
-			direction = other.image_angle + random_range(-3,3);
+			direction = other.image_angle;
 			image_angle = direction;
 		}
 	
 	}
 
-	if (Gshot == true) && (mouse_check_button(mb_right)) && (oPlayer.state == pState.swing) && (instance_exists(oHook)) && (Recall = false)
+	if (Gshot == true) && (mouse_check_button(mb_right)) && (instance_exists(oHook)) && (Recall = false) && (oHook.hookL == true) 
 	{	
 		Recall = true;
 	}
+	
 
 	if(Recall == true) && (instance_exists(oHook))
 	{

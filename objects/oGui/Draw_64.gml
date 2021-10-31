@@ -30,3 +30,40 @@ if(global.gamePaused) && (settings == false)
 	draw_set_alpha(1.0);
 	}
 }
+
+if (oPlayer.state == pState.wait) && (settings == false)
+{
+	draw_set_alpha(1.0);
+	draw_set_color(c_white);
+	draw_set_font(fText);
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	
+	for (var i = 0; i < array_length(startOption); i++)
+	{
+	var _print = "";
+	if (i == startOptionSelected)
+	{
+		_print += "> " + startOption[i] + " <";
+	}
+	else
+	{
+		_print += startOption[i];
+		draw_set_alpha(0.7);
+	}
+	draw_text(RESOLUTION_W * 0.5, RESOLUTION_H * 0.5 + 38 + (i * 28), _print);
+	draw_set_alpha(1.0);
+	}
+}
+
+if (Continue == true)
+{
+draw_set_color(c_black);
+draw_rectangle(0,0,RESOLUTION_W,RESOLUTION_H,false);
+}
+
+if(RestartGame == true)
+{
+draw_set_color(c_black);
+draw_rectangle(0,0,RESOLUTION_W,RESOLUTION_H,false);
+}

@@ -3,7 +3,7 @@
 
 
 
-endtext[0] = "Programing By Sigmation with Some adivece from twitch.tv/deltacompany";
+endtext[0] = "Programing By Sigmation with Some adivece from a friend";
 endtext[1] = "Art By Sigmation Made in Aseprite And Titles made with TextCraft";
 endtext[2] = "Music By Sigmation Made With BeepBox";
 endtext[3] = "Sound Effects By Sigmation Made With jsfxr And some from freesound.org";
